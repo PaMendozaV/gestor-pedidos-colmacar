@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head('Sobre nosotros')}"></head>
+<body>
+<nav th:replace="~{fragments/tienda :: nav}"></nav>
+<section class="nosotros">
+    <div class="nosotros__contenido">
+        <p class="nosotros__eyebrow">Sobre nosotros</p>
+        <h1>Más de una idea, una forma de crear</h1>
+        <p>
+            En Grupo Colmacar nos dedicamos a la sublimación y artes gráficas a la medida
+            de cada cliente en Barquisimeto. Agendas, lanyards, termos y mucho más,
+            hechos con atención al detalle y materiales de calidad.
+        </p>
+        <p>
+            Trabajamos de la mano contigo para convertir tu idea en un producto físico
+            que representa lo que quieres transmitir — ya sea para tu marca, tu evento,
+            o un regalo especial.
+        </p>
+        <a th:href="@{/catalogo}" class="btn-transparente">Ver Catálogo</a>
+
+    </div>
+</section>
+<section class="ubicacion">
+    <div class="ubicacion__info">
+        <p class="nosotros__eyebrow">Visítanos</p>
+        <h2>Nuestro local</h2>
+        <address class="ubicacion__direccion">
+            Carrera 17 con calle 21<br>
+            Edificio Aurora, planta baja, local 5<br>
+            Santa María, vidrios negros<br>
+            Barquisimeto, Edo. Lara — Venezuela
+        </address>
+        <a href="https://www.google.com/maps?q=10.064417,-69.311556" target="_blank" rel="noopener" class="ubicacion__link">
+            Abrir en Google Maps →
+        </a>
+    </div>
+
+    <div class="ubicacion__mapa">
+        <iframe
+            src="https://www.google.com/maps?q=10.064417,-69.311556&hl=es&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</section>
+
+<th:block th:replace="~{fragments/tienda :: pie}"></th:block>
+</body>
+</html>

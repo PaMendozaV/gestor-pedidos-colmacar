@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultar pedido · Grupo Colmacar</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="barra">
+    <button class="btn btn-fantasma btn-icono" id="btn-menu" type="button" aria-controls="lateral" aria-expanded="false" aria-label="Menú">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="marca"><div class="sello" aria-hidden="true">GC</div><span>Grupo Colmacar</span></div>
+    <div class="espacio"></div>
+    <div class="usuario">
+      <span class="nombre" id="u-nombre"></span>
+      <span class="rol" id="u-rol"></span>
+      <button class="btn btn-fantasma" id="btn-salir" type="button">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H5v16h4M14 8l4 4-4 4M18 12H9"/></svg>Salir
+      </button>
+    </div>
+  </header>
+  <aside class="lateral" id="lateral" aria-label="Navegación principal">
+    <nav>
+      <a href="pedidos.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg><span>Pedidos</span></a>
+      <a href="index.html" aria-current="page"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>Consultar pedido</span></a>
+    </nav>
+  </aside>
+  <div class="velo" id="velo" hidden></div>
+
+  <main class="contenido" id="contenido" tabindex="-1">
+    <div class="encabezado-pagina">
+      <div>
+        <h1>Consultar pedido</h1>
+        <p class="sub">Estado, siguiente paso e historial de un pedido.</p>
+      </div>
+    </div>
+
+    <form class="buscador" id="form-consulta" role="search">
+      <label class="solo-lector" for="codigo">Código del pedido</label>
+      <input id="codigo" placeholder="PED-0001" autocomplete="off" spellcheck="false">
+      <button class="btn btn-oscuro" type="submit">Consultar</button>
+    </form>
+
+    <div id="sin-pedido"></div>
+
+    <section id="detalle" hidden aria-live="polite">
+      <div class="tarjeta">
+        <div class="cabecera-pedido">
+          <div>
+            <h2 id="d-codigo"></h2>
+            <p class="meta" id="d-meta"></p>
+          </div>
+          <span id="d-chip"></span>
+        </div>
+        <ol class="stepper" id="stepper" aria-label="Progreso del pedido"></ol>
+      </div>
+
+      <div class="tarjeta siguiente" id="siguiente">
+        <h2>Siguiente paso</h2>
+        <p class="quien" id="quien"></p>
+        <div class="acciones" id="acciones"></div>
+        <div id="codigo-entrega"></div>
+      </div>
+
+      <details class="desplegable" id="det-historial">
+        <summary>Historial de transiciones <span class="contador" id="h-contador"></span></summary>
+        <div class="cuerpo">
+          <div class="tabla-envoltura">
+            <table class="tabla">
+              <thead><tr><th scope="col">Fecha</th><th scope="col">Origen</th><th scope="col">Evento</th><th scope="col">Rol</th><th scope="col">Destino</th><th scope="col">Resultado</th></tr></thead>
+              <tbody id="historial"></tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+
+      <details class="desplegable">
+        <summary>Reglas del autómata</summary>
+        <div class="cuerpo">
+          <div class="tabla-envoltura">
+            <table class="tabla">
+              <thead><tr><th scope="col">Desde</th><th scope="col">Evento</th><th scope="col">Lo emite</th><th scope="col">Hacia</th></tr></thead>
+              <tbody id="reglas"></tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+  </main>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script type="module" src="js/consulta.js"></script>
+</body>
+</html>

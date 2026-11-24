@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedidos · Grupo Colmacar</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+  <header class="barra">
+    <button class="btn btn-fantasma btn-icono" id="btn-menu" type="button" aria-controls="lateral" aria-expanded="false" aria-label="Menú">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="marca"><div class="sello" aria-hidden="true">GC</div><span>Grupo Colmacar</span></div>
+    <div class="espacio"></div>
+    <div class="usuario">
+      <span class="nombre" id="u-nombre"></span>
+      <span class="rol" id="u-rol"></span>
+      <button class="btn btn-fantasma" id="btn-salir" type="button">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H5v16h4M14 8l4 4-4 4M18 12H9"/></svg>Salir
+      </button>
+    </div>
+  </header>
+  <aside class="lateral" id="lateral" aria-label="Navegación principal">
+    <nav>
+      <a href="pedidos.html" aria-current="page"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg><span>Pedidos</span></a>
+      <a href="index.html"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>Consultar pedido</span></a>
+    </nav>
+  </aside>
+  <div class="velo" id="velo" hidden></div>
+
+  <main class="contenido" id="contenido" tabindex="-1">
+    <div class="encabezado-pagina">
+      <div>
+        <h1 id="titulo">Pedidos</h1>
+        <p class="sub" id="subtitulo"></p>
+      </div>
+      <a class="btn btn-primario" id="btn-nuevo" href="/catalogo" hidden>Ir a la tienda</a>
+    </div>
+
+    <section class="resumen" id="resumen" aria-label="Pedidos por estado"></section>
+
+    <section class="tarjeta" aria-labelledby="titulo-tabla">
+      <h2 class="solo-lector" id="titulo-tabla">Listado de pedidos</h2>
+      <form class="filtros" id="form-filtro" role="search">
+        <label class="solo-lector" for="filtro-codigo">Buscar por código</label>
+        <input id="filtro-codigo" type="search" placeholder="Buscar código, ej. PED-0003" autocomplete="off">
+        <label class="solo-lector" for="filtro-estado">Estado</label>
+        <select id="filtro-estado"><option value="">Todos los estados</option></select>
+        <button class="btn btn-oscuro" type="submit">Filtrar</button>
+        <button class="btn btn-fantasma" type="button" id="limpiar">Limpiar</button>
+      </form>
+      <div class="tabla-envoltura" id="envoltura-tabla">
+        <table class="tabla">
+          <thead><tr><th scope="col">Código</th><th scope="col">Total</th><th scope="col" class="col-cliente">Cliente</th><th scope="col">Estado</th><th scope="col">Actualizado</th><th scope="col"><span class="solo-lector">Acciones</span></th></tr></thead>
+          <tbody id="filas"></tbody>
+        </table>
+      </div>
+      <div id="vacio" hidden></div>
+    </section>
+  </main>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <script type="module" src="js/listado.js"></script>
+</body>
+</html>

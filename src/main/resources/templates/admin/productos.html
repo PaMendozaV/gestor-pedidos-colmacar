@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head('Admin · Productos')}"></head>
+<body>
+<nav th:replace="~{admin/producto-form :: nav-admin}"></nav>
+<main class="admin-contenido">
+  <div class="admin-encabezado">
+    <div>
+      <h1>Productos</h1>
+      <p th:text="${pagina.totalElements} + ' productos'"></p>
+    </div>
+    <div class="admin-encabezado__acciones">
+      <a th:href="@{/}" class="btn-secundario">← Ver tienda</a>
+      <a th:href="@{/admin/productos/nuevo}" class="btn-dorado">+ Nuevo producto</a>
+    </div>
+  </div>
+  <p class="aviso aviso--ok" th:if="${aviso}" th:text="${aviso}" role="status"></p>
+
+  <form class="admin-buscador" th:action="@{/admin}" method="get" role="search">
+    <label for="buscador-admin" class="solo-lector">Buscar producto</label>
+    <input type="search" id="buscador-admin" name="q" th:value="${q}" placeholder="Buscar producto..." maxlength="100" autocomplete="off">
+  </form>
+
+  <table class="tabla-productos">
+    <thead><tr><th scope="col">Producto</th><th scope="col">Detal</th><th scope="col">Mayor</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead>
+    <tbody id="lista-productos-admin">
+      <tr th:each="p : ${pagina.content}">
+        <td class="tabla-productos__nombre">
+          <img th:if="${p.imagen}" th:src="${p.imagen}" alt="">
+          <span th:unless="${p.imagen}" class="tabla-productos__miniatura-vacia"></span>
+          <span th:text="${p.nombre}"></span>
+        </td>
+        <td class="tabla-productos__precio" th:text="'$' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}"></td>
+        <td th:text="${p.precioMayor != null} ? '$' + ${#numbers.formatDecimal(p.precioMayor, 1, 'COMMA', 2, 'POINT')} : '—'"></td>
+        <td><span class="estado-pill" th:classappend="${!p.activo} ? 'estado-pill--baja'" th:text="${p.activo} ? 'Activo' : 'Eliminado'"></span></td>
+        <td class="tabla-productos__acciones">
+          <a th:href="@{/admin/productos/{id}/editar(id=${p.id})}" th:aria-label="'Editar ' + ${p.nombre}">Editar</a>
+          <form th:if="${p.activo}" th:action="@{/admin/productos/{id}/eliminar(id=${p.id})}" method="post" class="form-en-linea" data-confirmar="¿Dar de baja este producto?">
+            <button type="submit">Dar de baja</button>
+          </form>
+          <form th:unless="${p.activo}" th:action="@{/admin/productos/{id}/activar(id=${p.id})}" method="post" class="form-en-linea">
+            <button type="submit">Reactivar</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="catalogo__vacio" th:if="${pagina.empty}">No hay productos.</p>
+  <div th:replace="~{fragments/tienda :: paginacion(${pagina}, '/admin', '')}"></div>
+</main>
+<script th:src="@{/js/admin.js}"></script>
+</body>
+</html>

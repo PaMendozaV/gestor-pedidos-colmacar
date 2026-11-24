@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head(${productoId == null ? 'Nuevo producto' : 'Editar producto'})}"></head>
+<body>
+<nav class="admin-nav" th:fragment="nav-admin">
+  <div class="admin-nav__marca"><span class="admin-nav__logo">GC</span><span>Panel de administración</span></div>
+  <div class="admin-nav__usuario">
+    <a th:href="@{/admin}">Productos</a>
+    <a th:href="@{/pedidos.html}">Pedidos</a>
+    <span th:text="${sesion != null ? sesion.username : ''}"></span>
+    <form th:action="@{/logout}" method="post" class="form-en-linea"><button type="submit">Salir</button></form>
+  </div>
+</nav>
+
+<main class="tarjeta-formulario">
+  <h2 th:text="${productoId == null ? 'Nuevo producto' : 'Editar producto'}"></h2>
+  <form th:action="${productoId == null} ? @{/admin/productos/nuevo} : @{/admin/productos/{id}/editar(id=${productoId})}"
+        th:object="${form}" method="post" enctype="multipart/form-data" id="form-producto">
+    <div class="login-tarjeta__error" th:if="${#fields.hasAnyErrors() or errorImagen != null}" role="alert">
+      <ul>
+        <li th:each="e : ${#fields.allErrors()}" th:text="${e}"></li>
+        <li th:if="${errorImagen}" th:text="${errorImagen}"></li>
+      </ul>
+    </div>
+    <label for="nombre">Nombre</label>
+    <input id="nombre" type="text" th:field="*{nombre}" maxlength="100" required>
+
+    <label for="precio">Precio detal (USD)</label>
+    <input id="precio" type="number" step="0.01" min="0.01" max="99999999.99" th:field="*{precio}" required>
+
+    <label for="precioMayor" th:text="'Precio al por mayor (' + ${umbralMayorista} + '+ unidades, USD)'"></label>
+    <input id="precioMayor" type="number" step="0.01" min="0.01" max="99999999.99" th:field="*{precioMayor}">
+
+    <label for="categoriaId">Categoría</label>
+    <select id="categoriaId" th:field="*{categoriaId}" class="select-categoria">
+      <option value="">Sin categoría</option>
+      <option th:each="c : ${categorias}" th:value="${c.id}" th:text="${c.nombre}"></option>
+    </select>
+
+    <label>Imagen <span class="ayuda">(JPG, PNG, WEBP o GIF, máx. 5 MB)</span></label>
+    <label class="subida-imagen" for="imagen">
+      <img th:if="${imagenActual}" th:src="${imagenActual}" class="subida-imagen__preview" alt="Imagen actual" id="vista-previa">
+      <span th:unless="${imagenActual}" id="vista-previa">Subir imagen</span>
+    </label>
+    <input type="file" id="imagen" name="imagen" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+
+    <div class="switch-disponible">
+      <label for="disponible">Disponible</label>
+      <label class="switch"><input type="checkbox" id="disponible" th:field="*{disponible}"><span class="switch__deslizador"></span></label>
+    </div>
+    <div class="acciones-formulario">
+      <a th:href="@{/admin}" class="btn-cancelar">Cancelar</a>
+      <button type="submit" class="btn-guardar">Guardar</button>
+    </div>
+  </form>
+</main>
+<script th:src="@{/js/admin.js}"></script>
+</body>
+</html>

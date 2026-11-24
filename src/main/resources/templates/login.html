@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · Grupo Colmacar</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="pagina-login">
+  <main class="login">
+    <div class="marca">
+      <div class="sello" aria-hidden="true">GC</div>
+      <h1>Grupo Colmacar <small>Gestión de pedidos</small></h1>
+    </div>
+    <p class="aviso ok" th:if="${param.registrado}" role="status">Cuenta creada. Ya puedes iniciar sesión.</p>
+    <p class="aviso ok" th:if="${param.salir}" role="status">Sesión cerrada.</p>
+    <p class="aviso error" th:if="${param.error}" role="alert">Usuario o contraseña incorrectos, o cuenta inactiva.</p>
+    <form th:action="@{/login}" method="post">
+      <div class="campo">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" name="username" autocomplete="username" required autofocus maxlength="50">
+      </div>
+      <div class="campo">
+        <label for="clave">Contraseña</label>
+        <input id="clave" name="password" type="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-primario" type="submit">Entrar</button>
+    </form>
+    <p class="pie-login">¿No tienes cuenta? <a th:href="@{/registro}">Regístrate como cliente</a></p>
+  </main>
+</body>
+</html>

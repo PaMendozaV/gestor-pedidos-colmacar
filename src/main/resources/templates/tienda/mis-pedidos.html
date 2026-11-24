@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head('Mis pedidos')}"></head>
+<body>
+<nav th:replace="~{fragments/tienda :: nav}"></nav>
+
+<main class="pagina-tienda" id="mis-pedidos" th:data-pendientes="${#strings.listJoin(pedidos.?[estado.name() == 'PAGO_PENDIENTE'].![codigo], ',')}">
+  <h1>Mis pedidos</h1>
+  <p class="aviso aviso--ok" th:if="${param.confirmado}" role="status"
+     th:text="'Pedido ' + ${param.confirmado[0]} + ' confirmado. El pago se está procesando.'"></p>
+  <p class="aviso aviso--ok" th:if="${param.pago != null and param.pago[0] == 'ok'}" role="status">
+    Pago enviado. El estado cambia cuando la pasarela lo confirme.</p>
+  <p class="aviso" th:if="${param.pago != null and param.pago[0] == 'cancelado'}" role="status">
+    Pago cancelado. Puedes reintentarlo desde el seguimiento del pedido.</p>
+  <p th:if="${carrito}" class="ayuda">Tienes un carrito abierto. <a th:href="@{/checkout}">Ir a pagar</a></p>
+
+  <p class="catalogo__vacio" th:if="${#lists.isEmpty(pedidos)}">Aún no has confirmado pedidos.
+    <a th:href="@{/catalogo}">Ver catálogo</a></p>
+
+  <article class="pedido-cliente" th:each="p : ${pedidos}">
+    <header>
+      <div>
+        <h2 th:text="${p.codigo}"></h2>
+        <p class="ayuda" th:text="${#temporals.format(p.creadoEn, 'dd/MM/yyyy HH:mm')}"></p>
+      </div>
+      <span class="chip-estado" th:data-estado="${p.estado.name()}" th:text="${p.estado.name().replace('_', ' ')}"></span>
+      <strong th:text="'$' + ${#numbers.formatDecimal(p.total, 1, 'COMMA', 2, 'POINT')} + ' ' + ${p.moneda}"></strong>
+    </header>
+    <details>
+      <summary th:text="${#lists.size(p.detalles)} + ' producto(s)'"></summary>
+      <table class="tabla-lineas">
+        <tr th:each="d : ${p.detalles}">
+          <td th:text="${d.nombre}"></td>
+          <td th:text="'x' + ${d.cantidad}"></td>
+          <td th:text="'$' + ${#numbers.formatDecimal(d.precioUnitario, 1, 'COMMA', 2, 'POINT')} + (${d.esMayorista} ? ' (mayor)' : '')"></td>
+          <td th:text="'$' + ${#numbers.formatDecimal(d.subtotal, 1, 'COMMA', 2, 'POINT')}"></td>
+        </tr>
+      </table>
+    </details>
+    <p th:if="${p.urlPago != null and p.estado.name() == 'PAGO_PENDIENTE'}">
+      <a th:href="${p.urlPago}" class="btn-pagar">Completar pago</a>
+    </p>
+    <a th:href="@{/index.html(codigo=${p.codigo})}" class="enlace-secundario">Seguimiento y código de entrega →</a>
+  </article>
+</main>
+
+<th:block th:replace="~{fragments/tienda :: pie}"></th:block>
+<script th:src="@{/js/mis-pedidos.js}"></script>
+</body>
+</html>

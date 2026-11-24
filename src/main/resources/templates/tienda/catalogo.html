@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head('Catálogo')}"></head>
+<body>
+<nav th:replace="~{fragments/tienda :: nav}"></nav>
+
+<section class="catalogo-completo">
+  <div class="catalogo__encabezado">
+    <h2>Catálogo</h2>
+    <p>Explora todos nuestros productos</p>
+    <div class="buscador" th:fragment="buscador" role="search">
+      <svg class="buscador__icono" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M17 17L13 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <label for="buscador-tienda" class="solo-lector">Buscar producto</label>
+      <input type="search" id="buscador-tienda" placeholder="Buscar producto..." maxlength="100" autocomplete="off">
+      <button type="button" class="buscador__limpiar" id="buscador-limpiar" aria-label="Limpiar búsqueda">×</button>
+    </div>
+    <div class="tabs-categoria">
+      <a th:href="@{/catalogo}" class="tabs-categoria__item" th:classappend="${categoriaActual == null} ? 'activo'">Todos</a>
+      <a th:each="cat : ${categorias}" th:href="@{/catalogo(categoria=${cat.id})}" class="tabs-categoria__item"
+         th:classappend="${categoriaActual == cat.id} ? 'activo'" th:text="${cat.nombre}"></a>
+    </div>
+  </div>
+
+  <div class="grid-productos" id="grid-productos" th:if="${!pagina.empty}">
+    <th:block th:each="p : ${pagina.content}"><div th:replace="~{fragments/tienda :: tarjeta(${p})}"></div></th:block>
+  </div>
+  <p class="catalogo__vacio" th:if="${pagina.empty}">No hay productos en esta categoría todavía.</p>
+  <div th:replace="~{fragments/tienda :: paginacion(${pagina}, '/catalogo',
+        ${categoriaActual != null ? 'categoria=' + categoriaActual + '&' : ''})}"></div>
+</section>
+
+<th:block th:replace="~{fragments/tienda :: pie}"></th:block>
+<div th:replace="~{fragments/tienda :: barra}"></div>
+<script th:src="@{/js/carrito.js}"></script>
+<script th:src="@{/js/buscador.js}"></script>
+</body>
+</html>

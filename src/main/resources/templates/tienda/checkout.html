@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head('Ir a pagar')}"></head>
+<body>
+<nav th:replace="~{fragments/tienda :: nav}"></nav>
+
+<main class="pagina-tienda">
+  <h1>Ir a pagar</h1>
+  <p class="aviso aviso--error" th:if="${errorCheckout}" th:text="${errorCheckout}" role="alert"></p>
+
+  <div class="checkout">
+    <section class="checkout__resumen" aria-labelledby="t-resumen">
+      <h2 id="t-resumen">Tu pedido</h2>
+      <p id="carrito-estado" class="ayuda" aria-live="polite">Calculando precios…</p>
+      <table class="tabla-lineas" id="tabla-lineas" hidden>
+        <thead><tr><th scope="col">Producto</th><th scope="col">Cant.</th><th scope="col">Precio</th><th scope="col">Subtotal</th></tr></thead>
+        <tbody id="lineas"></tbody>
+        <tfoot><tr><th colspan="3" scope="row">Total (USD)</th><td id="total">$0.00</td></tr></tfoot>
+      </table>
+      <p class="ayuda" th:text="'Precio mayorista desde ' + ${umbralMayorista} + ' unidades por producto. Precios y total calculados por la tienda.'"></p>
+      <a th:href="@{/catalogo}" class="enlace-secundario">← Seguir comprando</a>
+    </section>
+
+    <section class="checkout__datos" aria-labelledby="t-datos">
+      <h2 id="t-datos">Datos de entrega</h2>
+      <form th:action="@{/checkout}" th:object="${form}" method="post" id="form-checkout" novalidate>
+        <label for="nombre">Nombre de contacto</label>
+        <input id="nombre" th:field="*{nombre}" maxlength="100" required autocomplete="name">
+        <span class="error-campo" th:errors="*{nombre}"></span>
+
+        <label for="telefono">Teléfono</label>
+        <input id="telefono" type="tel" th:field="*{telefono}" maxlength="20" required autocomplete="tel">
+        <span class="error-campo" th:errors="*{telefono}"></span>
+
+        <label for="direccion">Dirección de entrega</label>
+        <textarea id="direccion" th:field="*{direccion}" maxlength="200" rows="2" required autocomplete="street-address"></textarea>
+        <span class="error-campo" th:errors="*{direccion}"></span>
+
+        <label for="nota">Nota <span class="ayuda">(opcional)</span></label>
+        <textarea id="nota" th:field="*{nota}" maxlength="300" rows="2"></textarea>
+        <span class="error-campo" th:errors="*{nota}"></span>
+
+        <button type="submit" class="btn-pagar" id="btn-confirmar" disabled>Confirmar y pagar</button>
+        <p class="ayuda">Al confirmar, el pedido queda congelado con estos precios y pasa a pago.</p>
+      </form>
+    </section>
+  </div>
+</main>
+
+<th:block th:replace="~{fragments/tienda :: pie}"></th:block>
+<script th:src="@{/js/checkout.js}"></script>
+</body>
+</html>

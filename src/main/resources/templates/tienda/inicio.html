@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/tienda :: head('Sublimación y artes gráficas')}"></head>
+<body>
+<nav th:replace="~{fragments/tienda :: nav}"></nav>
+
+<section class="hero">
+  <video class="hero__video" autoplay muted loop playsinline>
+    <source th:src="@{/img/fondo.mp4}" type="video/mp4">
+  </video>
+  <div class="hero__overlay"></div>
+  <div class="hero__contenido">
+    <div class="hero__logo">GC</div>
+    <p class="hero__marca">GRUPO COLMACAR</p>
+    <h1>Sublimación y artes gráficas a tu medida</h1>
+    <p class="hero__subtitulo">Agendas, lanyards, termos y más | Barquisimeto, Edo. Lara</p>
+    <a href="#catalogo" class="btn-transparente">Ver Productos</a>
+    <a th:href="@{/nosotros}" class="hero__link-secundario">Conócenos →</a>
+  </div>
+</section>
+
+<section class="categorias">
+  <div class="categorias__encabezado">
+    <p class="nosotros__eyebrow">Explora por categoría</p>
+    <h2>¿Qué estás buscando?</h2>
+  </div>
+  <div class="categorias__grid">
+    <a th:each="cat : ${categorias}" th:href="@{/catalogo(categoria=${cat.id})}" class="categoria-tile">
+      <img th:src="${cat.imagen != null ? cat.imagen : '/img/proceso_fondo.jpg'}" th:alt="${cat.nombre}">
+      <span class="categoria-tile__overlay"></span>
+      <span class="categoria-tile__nombre" th:text="${cat.nombre}"></span>
+    </a>
+  </div>
+</section>
+
+<section class="catalogo" id="catalogo">
+  <div class="catalogo__encabezado">
+    <h2>Productos</h2>
+    <p>Selecciona los artículos que te interesan</p>
+    <div th:replace="~{tienda/catalogo :: buscador}"></div>
+  </div>
+  <div class="grid-productos" id="grid-productos" th:if="${!pagina.empty}">
+    <th:block th:each="p : ${pagina.content}"><div th:replace="~{fragments/tienda :: tarjeta(${p})}"></div></th:block>
+  </div>
+  <p class="catalogo__vacio" th:if="${pagina.empty}">Todavía no hay productos publicados.</p>
+  <div th:replace="~{fragments/tienda :: paginacion(${pagina}, '/', '')}"></div>
+</section>
+
+<section class="proceso">
+  <div class="proceso__encabezado">
+    <p class="nosotros__eyebrow">Cómo trabajamos</p>
+    <h2>De tu idea a un producto real</h2>
+  </div>
+  <div class="proceso__pasos proceso__pasos--dos">
+    <div class="proceso__paso"><span class="proceso__numero">01</span><h3>Nos cuentas tu idea</h3>
+      <p>Coméntanos qué necesitas: agendas, lanyards, termos o cualquier diseño personalizado.</p></div>
+    <div class="proceso__paso"><span class="proceso__numero">02</span><h3>Diseñamos juntos</h3>
+      <p>Ajustamos colores, materiales y acabados hasta que el resultado sea exactamente el que imaginas.</p></div>
+  </div>
+</section>
+
+<section class="galeria">
+  <div class="proceso__encabezado">
+    <p class="nosotros__eyebrow">Nuestro trabajo</p>
+    <h2>Algunos proyectos recientes</h2>
+  </div>
+  <div class="galeria__grid">
+    <img src="https://i.ibb.co/wrM04qkk/Img1.png" alt="Trabajo realizado">
+    <img src="https://i.ibb.co/0y9XnnkF/img2.png" alt="Trabajo realizado">
+    <img src="https://i.ibb.co/jF45zLy/img3.png" alt="Proceso de sublimación">
+    <img src="https://i.ibb.co/kWYdvwF/img4.png" alt="Trabajo realizado">
+  </div>
+</section>
+
+<th:block th:replace="~{fragments/tienda :: pie}"></th:block>
+<div th:replace="~{fragments/tienda :: barra}"></div>
+<script th:src="@{/js/carrito.js}"></script>
+<script th:src="@{/js/buscador.js}"></script>
+</body>
+</html>
